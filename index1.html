@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>SHOES - SHOP | Boutique de chaussures</title>
+
+    <meta name="description"
+          content="Découvrez notre collection de chaussures tendance et commandez facilement sur WhatsApp.">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        header {
+            background: #111;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 27px;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            margin-top: 8px;
+            color: #ff8c00;
+        }
+
+        nav {
+            background: #222;
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 14px;
+        }
+
+        .hero {
+            background: #ff8c00;
+            color: #111;
+            padding: 35px 20px;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            margin-bottom: 18px;
+        }
+
+        .hero a {
+            display: inline-block;
+            background: #111;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 30px 0 20px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            padding: 12px;
+        }
+
+        .product {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 2px 8px #00000012;
+        }
+
+        .product img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .product h3 {
+            font-size: 15px;
+            margin: 10px 0;
+        }
+
+        .price {
+            color: #e87500;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .order-btn {
+            display: block;
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 10px 5px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        footer {
+            background: #111;
+            color: white;
+            text-align: center;
+            padding: 22px;
+            margin-top: 30px;
+        }
+
+        @media (min-width: 700px) {
+            .products {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+                padding: 25px;
+            }
+
+            .product img {
+                height: 190px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+        <h1>SHOES - SHOP</h1>
+        <p>Step into your style.</p>
+    </header>
+
+    <nav>
+        <a href="#accueil">Accueil</a>
+        <a href="#produits">Nos chaussures</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <section class="hero" id="accueil">
+        <h2>Ton style commence ici !</h2>
+
+        <p>
+            Découvre notre collection de chaussures
+            et trouve ton prochain coup de cœur.
+        </p>
+
+        <a href="#produits">
+            Découvrir la collection
+        </a>
+    </section>
+
+    <h2 class="section-title" id="produits">
+        NOS CHAUSSURES
+    </h2>
+
+    <section class="products">
+
+        <article class="product">
+            <img
+                src="https://placehold.co/400x300?text=Sneakers"
+                alt="Sneakers tendance">
+
+            <h3>Sneakers Urban</h3>
+
+            <p class="price">15 000 FCFA</p>
+
+            <a class="order-btn"
+               href="https://wa.me/237653241046?text=Bonjour%20SHOES%20SHOP%2C%20je%20souhaite%20commander%20les%20Sneakers%20Urban%20-%20Ref%20SH001%20au%20prix%20de%2015000%20FCFA."
+               target="_blank"
+               rel="noopener">
+                Commander
+            </a>
+        </article>
+
+        <article class="product">
+            <img
+                src="https://placehold.co/400x300?text=Classiques"
+                alt="Chaussures classiques">
+
+            <h3>Classic Elegance</h3>
+
+            <p class="price">20 000 FCFA</p>
+
+            <a class="order-btn"
+               href="https://wa.me/237659902532?text=Bonjour%20SHOES%20SHOP%2C%20je%20souhaite%20commander%20les%20Classic%20Elegance%20-%20Ref%20SH002%20au%20prix%20de%2020000%20FCFA."
+               target="_blank"
+               rel="noopener">
+                Commander
+            </a>
+        </article>
+
+        <article class="product">
+            <img
+                src="https://placehold.co/400x300?text=Sport"
+                alt="Chaussures de sport">
+
+            <h3>Sport Active</h3>
+
+            <p class="price">18 000 FCFA</p>
+
+            <a class="order-btn"
+               href="https://wa.me/237659902532?text=Bonjour%20SHOES%20SHOP%2C%20je%20souhaite%20commander%20les%20Sport%20Active%20-%20Ref%20SH003%20au%20prix%20de%2018000%20FCFA."
+               target="_blank"
+               rel="noopener">
+                Commander
+            </a>
+        </article>
+        <article class="product">
+            <img
+                src="https://placehold.co/400x300?text=Sandales"
+                alt="Sandales tendance">
+
+            <h3>Sandales Chic</h3>
+
+            <p class="price">8 000 FCFA</p>
+
+            <a class="order-btn"
+               href="https://wa.me/237659902532?text=Bonjour%20SHOES%20SHOP%2C%20je%20souhaite%20commander%20les%20Sandales%20Chic%20-%20Ref%20SH004%20au%20prix%20de%208000%20FCFA."
+               target="_blank"
+               rel="noopener">
+                Commander
+            </a>
+        </article>
+
+    </section>
+
+    <footer id="contact">
+        <h3>SHOES - SHOP</h3>
+
+        <p>Ta prochaine paire t'attend !</p>
+
+        <p>Commandes disponibles sur WhatsApp.</p>
+
+        <p>&copy; 2026 SHOES - SHOP</p>
+    </footer>
+
+</body>
+
+</html>
