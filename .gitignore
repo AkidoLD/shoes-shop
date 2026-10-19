@@ -1,0 +1,14 @@
+# Local settings and secrets (never commit)
+.env
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# Temporary files and logs
+/tmp/
+*.log
