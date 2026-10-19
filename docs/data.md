@@ -33,3 +33,9 @@ lisent tous ce même enregistrement : un produit n'est défini qu'à un seul end
   WebP légers, adaptés aux connexions mobiles ; ce sont des placeholders à
   remplacer par les vraies photos.
 - Si une référence inconnue est demandée, `public/product.php` répond `404`.
+
+
+# Tests des fonctionnalites implementes
+- Outil de test du **Schema.org** : [Rich Results Test](https://search.google.com/test/rich-results)
+- Outil de validation de **Open Graph** : **Whatsapp**
+- Outil de validation des liens de conv dynamique : **Whatsapp**
