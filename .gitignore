@@ -1,5 +1,5 @@
 # Local settings and secrets (never commit)
-.env
+src/config.local.php
 
 # Editors and operating systems
 .DS_Store

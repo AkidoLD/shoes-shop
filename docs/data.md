@@ -28,7 +28,7 @@ lisent tous ce même enregistrement : un produit n'est défini qu'à un seul end
 - Les **noms de champs sont en anglais** (convention du projet) ; les **valeurs**
   restent en français (`name`, `description`, `category_label`…).
 - `currency` contient le **code** (`XAF`). Le **symbole affiché** (`FCFA`) est un
-  réglage d'affichage : `CURRENCY_LABEL` dans `src/config.php`.
+  réglage d'affichage : `currency_label` dans `src/config.php`.
 - `image` est un chemin relatif à la racine web (`public/`). Les images sont des
   WebP légers, adaptés aux connexions mobiles ; ce sont des placeholders à
   remplacer par les vraies photos.

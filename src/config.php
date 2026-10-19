@@ -5,47 +5,45 @@ declare(strict_types=1);
 /*
  * Site settings.
  *
- * Values come from the .env file (loaded below) or from real environment
- * variables, which always win. No secret is committed: .env is git-ignored.
+ * Every default lives here. To override anything locally, create
+ * `src/config.local.php` (git-ignored) — see `src/config.example.php`.
  *
  * This file returns a configuration array.
  */
 
-require_once __DIR__ . '/env.php';
+$local = [];
 
-load_env(__DIR__ . '/../.env');
+if (is_file(__DIR__ . '/config.local.php')) {
+    $local = require __DIR__ . '/config.local.php';
+
+    if (!is_array($local)) {
+        $local = [];
+    }
+}
+
+$defaults = [
+    'site_name'       => 'SHOES - SHOP',
+    'site_url'        => '',                      // empty = inferred from the request
+    'whatsapp_number' => '',                      // international format, no "+" or spaces
+    'currency_label'  => 'FCFA',                  // symbol printed after amounts
+    'products_path'   => __DIR__ . '/../data/products.json',
+];
+
+$config = array_merge($defaults, $local);
 
 /*
- * Reads a setting, falling back to a default when unset or empty.
+ * Site base URL. Inferred from the request when not set; a value in the local
+ * config pins a canonical URL (public domain behind a proxy/CDN, or CLI).
  */
-$setting = static function (string $key, ?string $default = null): ?string {
-    $value = getenv($key);
+$config['site_url'] = rtrim((string) $config['site_url'], '/');
 
-    return ($value === false || $value === '') ? $default : $value;
-};
-
-/*
- * Site base URL.
- *
- * By default it is inferred from the request, so it is correct without any
- * configuration. SITE_URL stays available to force a canonical URL (public
- * domain behind a proxy/CDN, or when the Host header cannot be trusted).
- */
-$site_url = (string) $setting('SITE_URL', '');
-
-if ($site_url === '') {
+if ($config['site_url'] === '') {
     $is_https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
         || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https';
 
     $host = $_SERVER['HTTP_HOST'] ?? 'localhost:8000';
 
-    $site_url = ($is_https ? 'https://' : 'http://') . $host;
+    $config['site_url'] = ($is_https ? 'https://' : 'http://') . $host;
 }
 
-return [
-    'site_name'       => (string) $setting('SITE_NAME', 'SHOES - SHOP'),
-    'site_url'        => rtrim($site_url, '/'),
-    'whatsapp_number' => (string) $setting('WHATSAPP_NUMBER', ''),
-    'currency_label'  => (string) $setting('CURRENCY_LABEL', 'FCFA'),
-    'products_path'   => __DIR__ . '/../data/products.json',
-];
+return $config;

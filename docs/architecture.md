@@ -16,7 +16,7 @@
 │       └── img/*.webp        # photos des produits (placeholders WebP)
 ├── src/                     # logique
 │   ├── config.php           # réglages (URL, WhatsApp, devise…)
-│   ├── env.php              # lecture du fichier .env (sans dépendance)
+│   ├── config.example.php   # modèle de config locale à copier
 │   ├── helpers.php          # e(), format_price()
 │   └── products.php         # lecture et interrogation des produits
 └── templates/               # affichage
@@ -27,14 +27,12 @@
 
 ## Rôle de chaque fichier
 
-- **`src/config.php`** — renvoie un tableau de configuration. Charge le fichier
-  `.env` (via `src/env.php`) puis lit les valeurs ; les variables
-  d'environnement du système restent prioritaires. Déduit l'URL du site de la
-  requête si `SITE_URL` n'est pas défini (fonctionne en local et en hébergement
-  distant).
-- **`src/env.php`** — petit lecteur de `.env` « maison » (pas de dépendance) :
-  lignes `CLÉ=VALEUR`, commentaires `#`, guillemets retirés, l'environnement
-  réel gagne sur le fichier.
+- **`src/config.php`** — renvoie un tableau de configuration : valeurs par
+  défaut, puis surcharge éventuelle par `src/config.local.php` (fusion). Déduit
+  l'URL du site de la requête si `site_url` reste vide (fonctionne en local et
+  en hébergement distant).
+- **`src/config.example.php`** — modèle de configuration locale à copier vers
+  `src/config.local.php` (ignoré par Git, réservé aux secrets).
 - **`src/helpers.php`** — fonctions d'affichage partagées : `e()` échappe une
   valeur pour le HTML, `format_price()` met en forme un montant.
 - **`src/products.php`** — lit `data/products.json`, trouve un produit par
