@@ -1,15 +1,5 @@
 "use strict";
 
-/*
- * SHOES - SHOP — interface comfort only.
- *
- * This file never renders essential content (already server-rendered by PHP).
- * It only improves usage: search focus, automatic form submit, option picking.
- */
-
-/*
- * Header search button: move the cursor into the search field.
- */
 document.querySelectorAll("[data-focus-search]").forEach(function (button) {
     button.addEventListener("click", function () {
         const search = document.getElementById("search");
@@ -23,9 +13,6 @@ document.querySelectorAll("[data-focus-search]").forEach(function (button) {
     });
 });
 
-/*
- * Submit the catalogue form as soon as a filter or sort changes.
- */
 const toolbar = document.querySelector(".catalogue-toolbar");
 
 if (toolbar) {
@@ -36,9 +23,6 @@ if (toolbar) {
     });
 }
 
-/*
- * Visual selection of options (size / color) on the product page.
- */
 ["size-option", "color-option"].forEach(function (optionClass) {
     const options = document.querySelectorAll("." + optionClass);
 

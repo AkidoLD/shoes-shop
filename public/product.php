@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-/*
- * Product page: product.php?ref=SH001
- *
- * The product is read here (logic) then handed to the templates (display).
- * If the reference is missing or unknown, we answer with HTTP 404.
- */
-
 $root = dirname(__DIR__);
 
 $config = require $root . '/src/config.php';
 require $root . '/src/helpers.php';
 require $root . '/src/products.php';
+require $root . '/src/schema.org.php';
+require $root . '/src/opengraph.php';
+require $root . '/src/whatsapp.php';
+
+$whatsapp_contact_url = whatsapp_contact_link($config);
+$open_graph_tags      = '';
+$schema_org_tags      = '';
 
 $ref     = trim((string) ($_GET['ref'] ?? ''));
 $product = null;
@@ -26,9 +26,6 @@ try {
     $product = null;
 }
 
-
-// Case 1: missing or unknown reference -> 404.
-
 if ($product === null) {
 
     http_response_code(404);
@@ -37,6 +34,13 @@ if ($product === null) {
     $description = 'Ce produit n\'existe pas ou n\'est plus disponible.';
     $active_page = 'catalogue';
     $topbar      = 'Produit introuvable';
+
+    $open_graph_tags = render_open_graph($config, [
+        'title'       => $title,
+        'description' => $description,
+        'type'        => 'website',
+        'url'         => 'index.php',
+    ]);
 
     require $root . '/templates/header.php';
     ?>
@@ -74,15 +78,38 @@ if ($product === null) {
     exit;
 }
 
-
-// Case 2: product found -> render the page.
-
 $title       = (string) $product['name'] . ' | ' . $config['site_name'];
 $description = (string) ($product['description'] ?? '');
 $active_page = 'catalogue';
 $topbar      = 'Trouve la paire qui te correspond !';
 
 $available = !empty($product['available']);
+
+$product_url = absolute_url(
+    'product.php?ref=' . rawurlencode((string) $product['ref']),
+    $config
+);
+
+$whatsapp_order_url = whatsapp_product_link($product, $config);
+
+$open_graph_tags = render_open_graph($config, [
+    'title'        => (string) $product['name'],
+    'description'  => $description,
+    'type'         => 'product',
+    'url'          => $product_url,
+    'image'        => (string) ($product['og_image'] ?? $product['image'] ?? ''),
+    'image_alt'    => (string) $product['name'],
+    'image_width'  => 1200,
+    'image_height' => 630,
+    'image_type'   => 'image/jpeg',
+    'price'        => $product['price'] ?? null,
+    'currency'     => (string) ($product['currency'] ?? 'XAF'),
+    'availability' => $available ? 'in stock' : 'out of stock',
+]);
+
+$schema_org_tags = render_schema_org(
+    schema_org_product($product, $config, $product_url)
+);
 
 require $root . '/templates/header.php';
 ?>
@@ -91,7 +118,6 @@ require $root . '/templates/header.php';
 
             <div class="container">
 
-                <!-- FIL D'ARIANE -->
                 <div class="breadcrumb">
                     <a href="index.php">Accueil</a>
                     <span> / </span>
@@ -100,18 +126,14 @@ require $root . '/templates/header.php';
                     <span><?= e((string) $product['name']) ?></span>
                 </div>
 
-
                 <div class="product-detail-layout">
 
-                    <!-- IMAGE -->
                     <div class="product-detail-image">
                         <img
                             src="<?= e((string) $product['image']) ?>"
                             alt="<?= e((string) $product['name']) ?>">
                     </div>
 
-
-                    <!-- INFORMATIONS -->
                     <div class="product-detail-info">
 
                         <p class="product-detail-category">
@@ -144,8 +166,6 @@ require $root . '/templates/header.php';
                             <?= $available ? 'Disponible sur commande' : 'Indisponible' ?>
                         </div>
 
-
-                        <!-- CHOIX DE LA TAILLE -->
                         <?php if (!empty($product['sizes'])): ?>
                             <div class="product-option">
                                 <label>Choisis ta taille</label>
@@ -162,8 +182,6 @@ require $root . '/templates/header.php';
                             </div>
                         <?php endif; ?>
 
-
-                        <!-- CHOIX DE LA COULEUR -->
                         <?php if (!empty($product['colors'])): ?>
                             <div class="product-option">
                                 <label>Choisis ta couleur</label>
@@ -180,13 +198,13 @@ require $root . '/templates/header.php';
                             </div>
                         <?php endif; ?>
 
-
-                        <!-- ACTIONS -->
                         <div class="product-detail-actions">
 
-                            <!-- TODO(group): lien WhatsApp de commande du produit -->
-                            <a href="#" class="btn btn-primary">
-                                Commander directement →
+                            <a href="<?= e($whatsapp_order_url) ?>"
+                               class="btn btn-primary"
+                               target="_blank"
+                               rel="noopener">
+                                Commander sur WhatsApp →
                             </a>
 
                             <a href="index.php#catalogue" class="btn btn-outline">

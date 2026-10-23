@@ -1,10 +1,5 @@
-/* ========================================
-   SHOES - SHOP
-   Design system
-======================================== */
-
 :root {
-    /* Colors */
+
     --black: #0B0B0D;
     --black-soft: #151518;
     --white: #FFFFFF;
@@ -23,7 +18,6 @@
     --gray: #777780;
     --border: #E7E7EB;
 
-    /* Radii */
     --radius-sm: 8px;
     --radius-md: 14px;
     --radius-lg: 22px;
@@ -34,7 +28,6 @@
     --transition:
         0.25s ease;
 
-    /* Typography — one family */
     --font-sans:
         system-ui,
         -apple-system,
@@ -44,42 +37,33 @@
         Arial,
         sans-serif;
 
-    /* Typography — one scale */
-    --fs-2xs: 11px;   /* micro labels, badges */
-    --fs-xs: 12px;    /* meta text */
-    --fs-sm: 13px;    /* secondary text */
-    --fs-base: 15px;  /* body text */
-    --fs-lg: 18px;    /* large text */
-    --fs-xl: 24px;    /* small headings */
-    --fs-2xl: 30px;   /* prices, medium headings */
-    --fs-title: clamp(24px, 4vw, 34px);     /* section titles */
-    --fs-page-title: clamp(28px, 4.5vw, 40px); /* page title */
-    --fs-display: clamp(40px, 6vw, 62px);   /* hero title */
+    --fs-2xs: 11px;
+    --fs-xs: 12px;
+    --fs-sm: 13px;
+    --fs-base: 15px;
+    --fs-lg: 18px;
+    --fs-xl: 24px;
+    --fs-2xl: 30px;
+    --fs-title: clamp(24px, 4vw, 34px);
+    --fs-page-title: clamp(28px, 4.5vw, 40px);
+    --fs-display: clamp(40px, 6vw, 62px);
 
-    /* Typography — weights */
     --fw-normal: 400;
     --fw-medium: 500;
     --fw-semibold: 600;
     --fw-bold: 700;
     --fw-extrabold: 800;
 
-    /* Typography — line heights */
     --lh-tight: 1.15;
     --lh-snug: 1.3;
     --lh-normal: 1.55;
     --lh-relaxed: 1.75;
 
-    /* Typography — letter spacing */
     --ls-tight: -0.02em;
     --ls-normal: normal;
     --ls-wide: 0.06em;
     --ls-wider: 0.14em;
 }
-
-
-/* ========================================
-   RESET
-======================================== */
 
 * {
     margin: 0;
@@ -137,20 +121,10 @@ img {
     max-width: 100%;
 }
 
-
-/* ========================================
-   CONTAINER
-======================================== */
-
 .container {
     width: min(1200px, 92%);
     margin-inline: auto;
 }
-
-
-/* ========================================
-   TOP BAR
-======================================== */
 
 .topbar {
     background: var(--black);
@@ -163,11 +137,6 @@ img {
 .topbar strong {
     color: #FF5268;
 }
-
-
-/* ========================================
-   HEADER
-======================================== */
 
 .header {
     background: var(--white);
@@ -236,11 +205,6 @@ img {
     color: var(--red);
 }
 
-
-/* ========================================
-   BUTTONS
-======================================== */
-
 .btn {
     display: inline-flex;
     align-items: center;
@@ -293,11 +257,6 @@ img {
     border-color: var(--red);
     color: var(--red);
 }
-
-
-/* ========================================
-   HERO
-======================================== */
 
 .hero {
     background:
@@ -402,11 +361,6 @@ img {
     transform: rotate(-18deg);
 }
 
-
-/* ========================================
-   TRUST BAR
-======================================== */
-
 .trust-bar {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -426,11 +380,6 @@ img {
     color: var(--red);
     margin-right: 5px;
 }
-
-
-/* ========================================
-   SECTIONS
-======================================== */
 
 .section {
     padding-block: 65px;
@@ -463,11 +412,6 @@ img {
     font-size: var(--fs-base);
     margin-top: 10px;
 }
-
-
-/* ========================================
-   PRODUCT GRID
-======================================== */
 
 .product-grid {
     display: grid;
@@ -587,11 +531,6 @@ img {
     margin-top: auto;
 }
 
-
-/* ========================================
-   PROMOTIONAL BANNER
-======================================== */
-
 .promo-banner {
     background: var(--red-gradient);
     color: var(--white);
@@ -615,11 +554,6 @@ img {
     font-size: var(--fs-base);
     opacity: 0.9;
 }
-
-
-/* ========================================
-   FOOTER
-======================================== */
 
 .footer {
     background: var(--black);
@@ -663,11 +597,6 @@ img {
     font-size: var(--fs-xs);
 }
 
-
-/* ========================================
-   RESPONSIVE TABLET
-======================================== */
-
 @media (max-width: 900px) {
 
     .nav {
@@ -686,11 +615,6 @@ img {
         grid-template-columns: 1fr 1fr;
     }
 }
-
-
-/* ========================================
-   RESPONSIVE MOBILE
-======================================== */
 
 @media (max-width: 600px) {
 
@@ -796,11 +720,6 @@ img {
     }
 }
 
-
-/* ========================================
-   ACCESSIBILITY
-======================================== */
-
 :focus-visible {
     outline: 3px solid #FF5268;
     outline-offset: 3px;
@@ -815,11 +734,6 @@ img {
         animation-duration: 0.01ms !important;
     }
 }
-
-
-/* ========================================
-   CATALOGUE TOOLBAR
-======================================== */
 
 .catalogue-toolbar {
     display: grid;
@@ -923,11 +837,6 @@ img {
         grid-column: auto;
     }
 }
-
-
-/* ========================================
-   PRODUCT PAGE
-======================================== */
 
 .breadcrumb {
     display: flex;

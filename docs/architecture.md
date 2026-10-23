@@ -13,12 +13,15 @@
 │   └── assets/
 │       ├── css/style.css    # feuille de style
 │       ├── js/app.js        # JavaScript de confort uniquement
-│       └── img/*.webp        # photos des produits (placeholders WebP)
+│       └── img/              # photos produit (JPEG) + img/og/ (1200 × 630)
 ├── src/                     # logique
 │   ├── config.php           # réglages (URL, WhatsApp, devise…)
 │   ├── config.example.php   # modèle de config locale à copier
-│   ├── helpers.php          # e(), format_price()
-│   └── products.php         # lecture et interrogation des produits
+│   ├── helpers.php          # e(), format_price(), absolute_url()
+│   ├── products.php         # lecture et interrogation des produits
+│   ├── schema.org.php       # JSON-LD Product / Offer / ItemList
+│   ├── opengraph.php        # balises Open Graph et Twitter Card
+│   └── whatsapp.php         # liens wa.me pré-remplis
 └── templates/               # affichage
     ├── header.php           # <head> + en-tête
     ├── footer.php           # pied de page
@@ -34,10 +37,21 @@
 - **`src/config.example.php`** — modèle de configuration locale à copier vers
   `src/config.local.php` (ignoré par Git, réservé aux secrets).
 - **`src/helpers.php`** — fonctions d'affichage partagées : `e()` échappe une
-  valeur pour le HTML, `format_price()` met en forme un montant.
+  valeur pour le HTML, `format_price()` met en forme un montant,
+  `absolute_url()` transforme un chemin relatif en URL absolue (obligatoire
+  pour Open Graph et Schema.org).
 - **`src/products.php`** — lit `data/products.json`, trouve un produit par
   référence (`find_product_by_ref`), liste les catégories (`list_categories`),
   applique recherche / filtre / tri (`filter_and_sort`).
+- **`src/schema.org.php`** — construit les données structurées JSON-LD :
+  `schema_org_product()` (Product + Offer), `schema_org_item_list()` (catalogue
+  complet) et `render_schema_org()` (balise `<script type="application/ld+json">`).
+- **`src/opengraph.php`** — `render_open_graph()` produit les balises Open Graph
+  et Twitter Card (titre, description, URL, image absolue, prix et
+  disponibilité pour une fiche produit).
+- **`src/whatsapp.php`** — génère les liens `wa.me` : normalisation du numéro,
+  message de contact général et message de commande pré-rempli avec le modèle,
+  la référence, le prix et l'URL du produit.
 - **`public/index.php`** — point d'entrée de la liste. Valide les paramètres
   d'URL, filtre, trie, puis rend le HTML.
 - **`public/product.php`** — point d'entrée de la fiche. Répond `404` si la

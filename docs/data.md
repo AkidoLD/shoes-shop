@@ -1,7 +1,7 @@
 # Données des produits
 
 Source unique : **`data/products.json`** (un tableau d'objets, encodé en UTF-8).
-La page, et demain les balises Open Graph, le JSON-LD et le lien WhatsApp,
+La page, les balises Open Graph, le JSON-LD et le lien WhatsApp
 lisent tous ce même enregistrement : un produit n'est défini qu'à un seul endroit.
 
 ## Champs
@@ -13,7 +13,8 @@ lisent tous ce même enregistrement : un produit n'est défini qu'à un seul end
 | `description` | texte | oui | Description courte | `Des sneakers modernes pour un style urbain.` |
 | `price` | entier | oui | Prix en FCFA | `15000` |
 | `currency` | texte | oui | Code ISO de la devise | `XAF` |
-| `image` | texte | oui | Chemin relatif à la racine web | `assets/img/sh001.webp` |
+| `image` | texte | oui | Chemin relatif à la racine web | `assets/img/sh001.jpg` |
+| `og_image` | texte | non | Image 1200 × 630 pour Open Graph | `assets/img/og/sh001.jpg` |
 | `available` | booléen | oui | Produit commandable | `true` |
 | `old_price` | entier ou `null` | non | Prix barré (promotion) | `18000` |
 | `category` | texte | non | Code de la catégorie (filtre) | `sneakers` |
@@ -29,9 +30,9 @@ lisent tous ce même enregistrement : un produit n'est défini qu'à un seul end
   restent en français (`name`, `description`, `category_label`…).
 - `currency` contient le **code** (`XAF`). Le **symbole affiché** (`FCFA`) est un
   réglage d'affichage : `currency_label` dans `src/config.php`.
-- `image` est un chemin relatif à la racine web (`public/`). Les images sont des
-  WebP légers, adaptés aux connexions mobiles ; ce sont des placeholders à
-  remplacer par les vraies photos.
+- `image` est un chemin relatif à la racine web (`public/`). Les photos produit
+  sont des JPEG 1200 × 900 ; `og_image` fournit la version 1200 × 630 utilisée
+  par WhatsApp et les autres plateformes de partage.
 - Si une référence inconnue est demandée, `public/product.php` répond `404`.
 
 

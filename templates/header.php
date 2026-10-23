@@ -2,17 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * Shared page header.
- *
- * Expected variables, set by the page before including this file:
- * @var array<string, mixed> $config      site settings
- * @var string               $title       page title (<title>)
- * @var string               $description meta description
- * @var string               $active_page active navigation link
- * @var string               $topbar      top bar text
- */
-
 $active_page = $active_page ?? 'home';
 $topbar      = $topbar ?? 'Découvre les modèles disponibles !';
 ?>
@@ -26,17 +15,19 @@ $topbar      = $topbar ?? 'Découvre les modèles disponibles !';
 
     <meta name="description" content="<?= e($description) ?>">
 
+    <?= $open_graph_tags ?? '' ?>
+
+    <?= $schema_org_tags ?? '' ?>
+
     <meta name="theme-color" content="#0B0B0D">
 
     <title><?= e($title) ?></title>
 
-    <!-- FEUILLE DE STYLE PRINCIPALE -->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
 
-    <!-- BARRE PROMOTIONNELLE -->
     <div class="topbar">
         <p>
             <strong><?= e($config['site_name']) ?></strong>
@@ -44,8 +35,6 @@ $topbar      = $topbar ?? 'Découvre les modèles disponibles !';
         </p>
     </div>
 
-
-    <!-- EN-TÊTE DU SITE -->
     <header class="header">
 
         <div class="container header-inner">
@@ -57,7 +46,6 @@ $topbar      = $topbar ?? 'Découvre les modèles disponibles !';
                 SHOES <span>- SHOP</span>
 
             </a>
-
 
             <div class="header-actions">
 
@@ -75,8 +63,6 @@ $topbar      = $topbar ?? 'Découvre les modèles disponibles !';
 
         </div>
 
-
-        <!-- NAVIGATION PRINCIPALE -->
         <nav class="nav container"
             aria-label="Navigation principale">
 
@@ -101,6 +87,5 @@ $topbar      = $topbar ?? 'Découvre les modèles disponibles !';
         </nav>
 
     </header>
-
 
     <main>

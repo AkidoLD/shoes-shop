@@ -2,17 +2,8 @@
 
 declare(strict_types=1);
 
-/*
- * One product card in the catalogue list.
- *
- * Expected variables:
- * @var array<string, mixed> $product one product
- * @var array<string, mixed> $config  site settings
- */
-
 $product_url = 'product.php?ref=' . rawurlencode((string) $product['ref']);
 
-// Status badge: "NOUVEAU" wins over "POPULAIRE".
 if (!empty($product['is_new'])) {
     $status_badge = 'NOUVEAU';
 } elseif (!empty($product['featured'])) {
@@ -21,7 +12,6 @@ if (!empty($product['is_new'])) {
     $status_badge = '';
 }
 
-// Discount badge when an old price is set.
 $discount = '';
 if (!empty($product['old_price']) && (int) $product['old_price'] > (int) $product['price']) {
     $discount = '−' . (int) round((1 - (int) $product['price'] / (int) $product['old_price']) * 100) . '%';

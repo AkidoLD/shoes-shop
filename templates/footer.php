@@ -2,17 +2,9 @@
 
 declare(strict_types=1);
 
-/*
- * Shared page footer.
- *
- * Expected variable:
- * @var array<string, mixed> $config site settings
- */
 ?>
 </main>
 
-
-<!-- PIED DE PAGE -->
 <footer class="footer" id="contact">
 
     <div class="container footer-inner">
@@ -33,7 +25,6 @@ declare(strict_types=1);
 
         </div>
 
-
         <div>
 
             <h3>Navigation</h3>
@@ -50,14 +41,15 @@ declare(strict_types=1);
 
         </div>
 
-
         <div>
 
             <h3>Contact</h3>
 
             <div class="footer-links">
 
-                <a href="#">WhatsApp</a>
+                <a href="<?= e($whatsapp_contact_url ?? '#') ?>"
+                   target="_blank"
+                   rel="noopener">WhatsApp</a>
 
                 <a href="index.php#catalogue">Nos chaussures</a>
 
@@ -67,7 +59,6 @@ declare(strict_types=1);
 
     </div>
 
-
     <div class="footer-bottom">
 
         &copy; <?= date('Y') ?> <?= e($config['site_name']) ?>.
@@ -76,7 +67,6 @@ declare(strict_types=1);
     </div>
 
 </footer>
-
 
 <script src="assets/js/app.js"></script>
 

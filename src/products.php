@@ -2,18 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * Loading and querying products.
- *
- * Single source: the JSON file defined in the configuration.
- */
-
-/**
- * Loads every product from the JSON file.
- *
- * @return array<int, array<string, mixed>>
- * @throws RuntimeException when the file is missing, unreadable or invalid.
- */
 function load_products(array $config): array
 {
     $path = $config['products_path'];
@@ -37,12 +25,6 @@ function load_products(array $config): array
     return $products;
 }
 
-/**
- * Returns the product matching a reference, or null.
- *
- * @param array<int, array<string, mixed>> $products
- * @return array<string, mixed>|null
- */
 function find_product_by_ref(array $products, string $ref): ?array
 {
     foreach ($products as $product) {
@@ -54,12 +36,6 @@ function find_product_by_ref(array $products, string $ref): ?array
     return null;
 }
 
-/**
- * Categories available, derived from the products.
- *
- * @param array<int, array<string, mixed>> $products
- * @return array<string, string> category code => label
- */
 function list_categories(array $products): array
 {
     $categories = [];
@@ -75,12 +51,6 @@ function list_categories(array $products): array
     return $categories;
 }
 
-/**
- * Applies search, category filter and sorting, server side.
- *
- * @param array<int, array<string, mixed>> $products
- * @return array<int, array<string, mixed>>
- */
 function filter_and_sort(
     array $products,
     string $search = '',
@@ -127,11 +97,6 @@ function filter_and_sort(
     return $products;
 }
 
-/**
- * Accepted sort values (guard for the `sort` URL parameter).
- *
- * @return array<int, string>
- */
 function valid_sort_options(): array
 {
     return ['default', 'price-asc', 'price-desc', 'name-asc'];

@@ -2,25 +2,29 @@
 
 declare(strict_types=1);
 
-/*
- * Home page: list of shoes.
- *
- * Products are read from data/products.json and rendered server side, so the
- * HTML sent to the browser already contains them. Search, category filter and
- * sorting travel through URL parameters (they work without JavaScript).
- */
-
 $root = dirname(__DIR__);
 
 $config = require $root . '/src/config.php';
 require $root . '/src/helpers.php';
 require $root . '/src/products.php';
+require $root . '/src/schema.org.php';
+require $root . '/src/opengraph.php';
+require $root . '/src/whatsapp.php';
 
 $title       = $config['site_name'] . ' | Des chaussures pour ton style';
 $description = 'Découvre notre collection de sneakers, chaussures de ville, '
     . 'de sport et sandales. Commande facilement sur WhatsApp.';
 $active_page = 'catalogue';
 $topbar      = 'Découvre les modèles disponibles !';
+
+$open_graph_tags      = render_open_graph($config, [
+    'title'       => $title,
+    'description' => $description,
+    'type'        => 'website',
+    'url'         => 'index.php',
+]);
+$schema_org_tags      = '';
+$whatsapp_contact_url = whatsapp_contact_link($config);
 
 try {
     $all_products = load_products($config);
@@ -41,7 +45,6 @@ try {
     exit;
 }
 
-// URL parameters, validated before use.
 $search   = trim((string) ($_GET['q'] ?? ''));
 $category = (string) ($_GET['category'] ?? 'all');
 $sort     = (string) ($_GET['sort'] ?? 'default');
@@ -58,6 +61,30 @@ if (!in_array($sort, valid_sort_options(), true)) {
 
 $products = filter_and_sort($all_products, $search, $category, $sort);
 
+$og_image     = '';
+$og_image_alt = $config['site_name'];
+
+if ($products !== []) {
+    $og_image     = (string) ($products[0]['og_image'] ?? $products[0]['image'] ?? '');
+    $og_image_alt = (string) ($products[0]['name'] ?? $config['site_name']);
+}
+
+$open_graph_tags = render_open_graph($config, [
+    'title'        => $title,
+    'description'  => $description,
+    'type'         => 'website',
+    'url'          => 'index.php',
+    'image'        => $og_image,
+    'image_alt'    => $og_image_alt,
+    'image_width'  => 1200,
+    'image_height' => 630,
+    'image_type'   => 'image/jpeg',
+]);
+
+$schema_org_tags = $products !== []
+    ? render_schema_org(schema_org_item_list($products, $config))
+    : '';
+
 $sort_options = [
     'default'    => 'Tri par défaut',
     'price-asc'  => 'Prix croissant',
@@ -68,7 +95,6 @@ $sort_options = [
 require $root . '/templates/header.php';
 ?>
 
-        <!-- SECTION HERO -->
         <section class="hero" id="accueil">
 
             <div class="container hero-inner">
@@ -113,8 +139,6 @@ require $root . '/templates/header.php';
 
         </section>
 
-
-        <!-- BARRE DES AVANTAGES -->
         <section class="container trust-bar" aria-label="Nos avantages">
 
             <div class="trust-item">
@@ -134,8 +158,6 @@ require $root . '/templates/header.php';
 
         </section>
 
-
-        <!-- CATALOGUE -->
         <section class="section" id="catalogue">
 
             <div class="container">
@@ -158,8 +180,6 @@ require $root . '/templates/header.php';
 
                 </div>
 
-
-                <!-- RECHERCHE, FILTRE ET TRI (fonctionnent sans JavaScript) -->
                 <form class="catalogue-toolbar"
                       method="get"
                       action="index.php"
@@ -212,16 +232,12 @@ require $root . '/templates/header.php';
 
                 </form>
 
-
-                <!-- NOMBRE DE RÉSULTATS -->
                 <p class="catalogue-status" aria-live="polite">
                     <?= e((string) count($products)) ?>
                     produit<?= count($products) > 1 ? 's' : '' ?>
                     affiché<?= count($products) > 1 ? 's' : '' ?>.
                 </p>
 
-
-                <!-- GRILLE DES PRODUITS (générée côté serveur) -->
                 <div class="product-grid" id="productGrid">
 
                     <?php if ($products === []): ?>
@@ -245,8 +261,6 @@ require $root . '/templates/header.php';
 
         </section>
 
-
-        <!-- BANNIÈRE NOUVEAUTÉS -->
         <section class="section" id="nouveautes">
 
             <div class="container">
@@ -264,9 +278,11 @@ require $root . '/templates/header.php';
 
                     </div>
 
-                    <!-- TODO(group): lien WhatsApp de contact -->
-                    <a href="#" class="btn btn-dark">
-                        Nous contacter →
+                    <a href="<?= e($whatsapp_contact_url) ?>"
+                       class="btn btn-dark"
+                       target="_blank"
+                       rel="noopener">
+                        Nous contacter sur WhatsApp →
                     </a>
 
                 </div>
