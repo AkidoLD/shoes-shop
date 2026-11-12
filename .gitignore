@@ -14,3 +14,7 @@ Thumbs.db
 *.log
 
 AGENTS.md
+
+# dependancies
+vendor/
+node_modules/
