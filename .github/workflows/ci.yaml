@@ -2,8 +2,9 @@ name: CI
 
 on:
   push:
+    branches-ignore: [main]
   pull_request:
-
+    branches: [main]
+    
 jobs:
-  tests:
-    name: Tests unitaires
+  # Liste des jobs de la CI
