@@ -49,3 +49,4 @@ Puis ouvrir <http://localhost:8000>.
 - [`docs/architecture.md`](docs/architecture.md) — structure et rôle des fichiers
 - [`docs/data.md`](docs/data.md) — champs de `data/products.json`
 - [`docs/tp4.md`](docs/tp4.md) — détail des trois fonctionnalités du TP 4
+- [`docs/support-tp4.pptx`](docs/support-tp4.pptx) — support de soutenance (18 slides)
