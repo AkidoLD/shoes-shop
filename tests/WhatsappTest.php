@@ -3,6 +3,7 @@
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
+require __DIR__.'/../src/whatsapp.php';
 
 class WhatsappTest extends TestCase {
     function testWhatsappNumberReturnTheExpectedValue(){
