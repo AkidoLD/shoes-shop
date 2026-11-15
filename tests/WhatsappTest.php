@@ -21,6 +21,6 @@ class WhatsappTest extends TestCase
     }
 
     public function testFailedTest(){
-        $this->assertEquals(1 == 2);
+        $this->assertEquals(1, 2);
     }
 }
