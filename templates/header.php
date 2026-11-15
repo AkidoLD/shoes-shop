@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 $active_page = $active_page ?? 'home';
-$topbar      = $topbar ?? 'Découvre les modèles disponibles !';
+$topbar = $topbar ?? 'Découvre les modèles disponibles !';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -13,15 +13,15 @@ $topbar      = $topbar ?? 'Découvre les modèles disponibles !';
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="<?= e($description) ?>">
+    <meta name="description" content="<?php echo e($description); ?>">
 
-    <?= $open_graph_tags ?? '' ?>
+    <?php echo $open_graph_tags ?? ''; ?>
 
-    <?= $schema_org_tags ?? '' ?>
+    <?php echo $schema_org_tags ?? ''; ?>
 
     <meta name="theme-color" content="#0B0B0D">
 
-    <title><?= e($title) ?></title>
+    <title><?php echo e($title); ?></title>
 
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -30,8 +30,8 @@ $topbar      = $topbar ?? 'Découvre les modèles disponibles !';
 
     <div class="topbar">
         <p>
-            <strong><?= e($config['site_name']) ?></strong>
-            — <?= e($topbar) ?>
+            <strong><?php echo e($config['site_name']); ?></strong>
+            — <?php echo e($topbar); ?>
         </p>
     </div>
 
@@ -41,7 +41,7 @@ $topbar      = $topbar ?? 'Découvre les modèles disponibles !';
 
             <a href="index.php"
                 class="logo"
-                aria-label="<?= e($config['site_name']) ?> - Accueil">
+                aria-label="<?php echo e($config['site_name']); ?> - Accueil">
 
                 SHOES <span>- SHOP</span>
 
@@ -67,12 +67,12 @@ $topbar      = $topbar ?? 'Découvre les modèles disponibles !';
             aria-label="Navigation principale">
 
             <a href="index.php#accueil"
-                <?= $active_page === 'home' ? 'class="active"' : '' ?>>
+                <?php echo 'home' === $active_page ? 'class="active"' : ''; ?>>
                 Accueil
             </a>
 
             <a href="index.php#catalogue"
-                <?= $active_page === 'catalogue' ? 'class="active"' : '' ?>>
+                <?php echo 'catalogue' === $active_page ? 'class="active"' : ''; ?>>
                 Catalogue
             </a>
 

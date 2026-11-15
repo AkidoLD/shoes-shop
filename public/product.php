@@ -4,45 +4,49 @@ declare(strict_types=1);
 
 $root = dirname(__DIR__);
 
-$config = require $root . '/src/config.php';
-require $root . '/src/helpers.php';
-require $root . '/src/products.php';
-require $root . '/src/schema.org.php';
-require $root . '/src/opengraph.php';
-require $root . '/src/whatsapp.php';
+$config = require $root.'/src/config.php';
+
+require $root.'/src/helpers.php';
+
+require $root.'/src/products.php';
+
+require $root.'/src/schema.org.php';
+
+require $root.'/src/opengraph.php';
+
+require $root.'/src/whatsapp.php';
 
 $whatsapp_contact_url = whatsapp_contact_link($config);
-$open_graph_tags      = '';
-$schema_org_tags      = '';
+$open_graph_tags = '';
+$schema_org_tags = '';
 
-$ref     = trim((string) ($_GET['ref'] ?? ''));
+$ref = trim((string) ($_GET['ref'] ?? ''));
 $product = null;
 
 try {
-    if ($ref !== '') {
+    if ('' !== $ref) {
         $product = find_product_by_ref(load_products($config), $ref);
     }
 } catch (RuntimeException $error) {
     $product = null;
 }
 
-if ($product === null) {
-
+if (null === $product) {
     http_response_code(404);
 
-    $title       = 'Produit introuvable | ' . $config['site_name'];
+    $title = 'Produit introuvable | '.$config['site_name'];
     $description = 'Ce produit n\'existe pas ou n\'est plus disponible.';
     $active_page = 'catalogue';
-    $topbar      = 'Produit introuvable';
+    $topbar = 'Produit introuvable';
 
     $open_graph_tags = render_open_graph($config, [
-        'title'       => $title,
+        'title' => $title,
         'description' => $description,
-        'type'        => 'website',
-        'url'         => 'index.php',
+        'type' => 'website',
+        'url' => 'index.php',
     ]);
 
-    require $root . '/templates/header.php';
+    require $root.'/templates/header.php';
     ?>
 
     <section class="section">
@@ -74,36 +78,37 @@ if ($product === null) {
     </section>
 
     <?php
-    require $root . '/templates/footer.php';
+    require $root.'/templates/footer.php';
+
     exit;
 }
 
-$title       = (string) $product['name'] . ' | ' . $config['site_name'];
+$title = (string) $product['name'].' | '.$config['site_name'];
 $description = (string) ($product['description'] ?? '');
 $active_page = 'catalogue';
-$topbar      = 'Trouve la paire qui te correspond !';
+$topbar = 'Trouve la paire qui te correspond !';
 
 $available = !empty($product['available']);
 
 $product_url = absolute_url(
-    'product.php?ref=' . rawurlencode((string) $product['ref']),
+    'product.php?ref='.rawurlencode((string) $product['ref']),
     $config
 );
 
 $whatsapp_order_url = whatsapp_product_link($product, $config);
 
 $open_graph_tags = render_open_graph($config, [
-    'title'        => (string) $product['name'],
-    'description'  => $description,
-    'type'         => 'product',
-    'url'          => $product_url,
-    'image'        => (string) ($product['og_image'] ?? $product['image'] ?? ''),
-    'image_alt'    => (string) $product['name'],
-    'image_width'  => 1200,
+    'title' => (string) $product['name'],
+    'description' => $description,
+    'type' => 'product',
+    'url' => $product_url,
+    'image' => (string) ($product['og_image'] ?? $product['image'] ?? ''),
+    'image_alt' => (string) $product['name'],
+    'image_width' => 1200,
     'image_height' => 630,
-    'image_type'   => 'image/jpeg',
-    'price'        => $product['price'] ?? null,
-    'currency'     => (string) ($product['currency'] ?? 'XAF'),
+    'image_type' => 'image/jpeg',
+    'price' => $product['price'] ?? null,
+    'currency' => (string) ($product['currency'] ?? 'XAF'),
     'availability' => $available ? 'in stock' : 'out of stock',
 ]);
 
@@ -111,7 +116,7 @@ $schema_org_tags = render_schema_org(
     schema_org_product($product, $config, $product_url)
 );
 
-require $root . '/templates/header.php';
+require $root.'/templates/header.php';
 ?>
 
         <section class="section">
@@ -123,84 +128,84 @@ require $root . '/templates/header.php';
                     <span> / </span>
                     <a href="index.php#catalogue">Catalogue</a>
                     <span> / </span>
-                    <span><?= e((string) $product['name']) ?></span>
+                    <span><?php echo e((string) $product['name']); ?></span>
                 </div>
 
                 <div class="product-detail-layout">
 
                     <div class="product-detail-image">
                         <img
-                            src="<?= e((string) $product['image']) ?>"
-                            alt="<?= e((string) $product['name']) ?>">
+                            src="<?php echo e((string) $product['image']); ?>"
+                            alt="<?php echo e((string) $product['name']); ?>">
                     </div>
 
                     <div class="product-detail-info">
 
                         <p class="product-detail-category">
-                            <?= e((string) ($product['category_label'] ?? '')) ?>
+                            <?php echo e((string) ($product['category_label'] ?? '')); ?>
                         </p>
 
                         <h1 class="product-detail-title">
-                            <?= e((string) $product['name']) ?>
+                            <?php echo e((string) $product['name']); ?>
                         </h1>
 
                         <p class="product-detail-reference">
-                            Référence : <?= e((string) $product['ref']) ?>
+                            Référence : <?php echo e((string) $product['ref']); ?>
                         </p>
 
                         <p class="product-detail-price">
-                            <?= e(format_price((int) $product['price'], $config)) ?>
+                            <?php echo e(format_price((int) $product['price'], $config)); ?>
 
-                            <?php if (!empty($product['old_price'])): ?>
+                            <?php if (!empty($product['old_price'])) { ?>
                                 <span class="product-detail-old-price">
-                                    <?= e(format_price((int) $product['old_price'], $config)) ?>
+                                    <?php echo e(format_price((int) $product['old_price'], $config)); ?>
                                 </span>
-                            <?php endif; ?>
+                            <?php } ?>
                         </p>
 
                         <p class="product-detail-description">
-                            <?= e((string) ($product['description'] ?? '')) ?>
+                            <?php echo e((string) ($product['description'] ?? '')); ?>
                         </p>
 
-                        <div class="product-detail-stock<?= $available ? '' : ' unavailable' ?>">
-                            <?= $available ? 'Disponible sur commande' : 'Indisponible' ?>
+                        <div class="product-detail-stock<?php echo $available ? '' : ' unavailable'; ?>">
+                            <?php echo $available ? 'Disponible sur commande' : 'Indisponible'; ?>
                         </div>
 
-                        <?php if (!empty($product['sizes'])): ?>
+                        <?php if (!empty($product['sizes'])) { ?>
                             <div class="product-option">
                                 <label>Choisis ta taille</label>
                                 <div class="product-size-list">
-                                    <?php foreach ((array) $product['sizes'] as $size): ?>
+                                    <?php foreach ((array) $product['sizes'] as $size) { ?>
                                         <button type="button"
                                                 class="option-button size-option"
-                                                data-size="<?= e((string) $size) ?>"
+                                                data-size="<?php echo e((string) $size); ?>"
                                                 aria-pressed="false">
-                                            <?= e((string) $size) ?>
+                                            <?php echo e((string) $size); ?>
                                         </button>
-                                    <?php endforeach; ?>
+                                    <?php } ?>
                                 </div>
                             </div>
-                        <?php endif; ?>
+                        <?php } ?>
 
-                        <?php if (!empty($product['colors'])): ?>
+                        <?php if (!empty($product['colors'])) { ?>
                             <div class="product-option">
                                 <label>Choisis ta couleur</label>
                                 <div class="product-color-list">
-                                    <?php foreach ((array) $product['colors'] as $color): ?>
+                                    <?php foreach ((array) $product['colors'] as $color) { ?>
                                         <button type="button"
                                                 class="option-button color-option"
-                                                data-color="<?= e((string) $color) ?>"
+                                                data-color="<?php echo e((string) $color); ?>"
                                                 aria-pressed="false">
-                                            <?= e((string) $color) ?>
+                                            <?php echo e((string) $color); ?>
                                         </button>
-                                    <?php endforeach; ?>
+                                    <?php } ?>
                                 </div>
                             </div>
-                        <?php endif; ?>
+                        <?php } ?>
 
                         <div class="product-detail-actions">
 
-                            <a href="<?= e($whatsapp_order_url) ?>"
+                            <a href="<?php echo e($whatsapp_order_url); ?>"
                                class="btn btn-primary"
                                target="_blank"
                                rel="noopener">
@@ -226,4 +231,4 @@ require $root . '/templates/header.php';
 
         </section>
 
-<?php require $root . '/templates/footer.php'; ?>
+<?php require $root.'/templates/footer.php'; ?>

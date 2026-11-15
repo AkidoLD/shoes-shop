@@ -47,7 +47,7 @@ declare(strict_types=1);
 
             <div class="footer-links">
 
-                <a href="<?= e($whatsapp_contact_url ?? '#') ?>"
+                <a href="<?php echo e($whatsapp_contact_url ?? '#'); ?>"
                    target="_blank"
                    rel="noopener">WhatsApp</a>
 
@@ -61,7 +61,7 @@ declare(strict_types=1);
 
     <div class="footer-bottom">
 
-        &copy; <?= date('Y') ?> <?= e($config['site_name']) ?>.
+        &copy; <?php echo date('Y'); ?> <?php echo e($config['site_name']); ?>.
         Tous droits réservés.
 
     </div>

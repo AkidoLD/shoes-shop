@@ -7,13 +7,13 @@ function load_products(array $config): array
     $path = $config['products_path'];
 
     if (!is_file($path)) {
-        throw new RuntimeException('Products data file not found: ' . $path);
+        throw new RuntimeException('Products data file not found: '.$path);
     }
 
     $content = file_get_contents($path);
 
-    if ($content === false) {
-        throw new RuntimeException('Unable to read products file: ' . $path);
+    if (false === $content) {
+        throw new RuntimeException('Unable to read products file: '.$path);
     }
 
     $products = json_decode($content, true);
@@ -43,7 +43,7 @@ function list_categories(array $products): array
     foreach ($products as $product) {
         $code = (string) ($product['category'] ?? '');
 
-        if ($code !== '') {
+        if ('' !== $code) {
             $categories[$code] = (string) ($product['category_label'] ?? $code);
         }
     }
@@ -59,7 +59,7 @@ function filter_and_sort(
 ): array {
     $search = trim(mb_strtolower($search));
 
-    if ($search !== '') {
+    if ('' !== $search) {
         $products = array_values(array_filter(
             $products,
             static function (array $product) use ($search): bool {
@@ -75,7 +75,7 @@ function filter_and_sort(
         ));
     }
 
-    if ($category !== 'all') {
+    if ('all' !== $category) {
         $products = array_values(array_filter(
             $products,
             static fn (array $product): bool => ($product['category'] ?? '') === $category
@@ -84,13 +84,13 @@ function filter_and_sort(
 
     usort($products, static function (array $a, array $b) use ($sort): int {
         return match ($sort) {
-            'price-asc'  => ($a['price'] ?? 0) <=> ($b['price'] ?? 0),
+            'price-asc' => ($a['price'] ?? 0) <=> ($b['price'] ?? 0),
             'price-desc' => ($b['price'] ?? 0) <=> ($a['price'] ?? 0),
-            'name-asc'   => strcoll(
+            'name-asc' => strcoll(
                 (string) ($a['name'] ?? ''),
                 (string) ($b['name'] ?? '')
             ),
-            default      => 0,
+            default => 0,
         };
     });
 

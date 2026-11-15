@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 return [
-
     'site_url' => '',
 
     'whatsapp_number' => '237000000000',

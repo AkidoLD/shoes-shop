@@ -4,33 +4,39 @@ declare(strict_types=1);
 
 $root = dirname(__DIR__);
 
-$config = require $root . '/src/config.php';
-require $root . '/src/helpers.php';
-require $root . '/src/products.php';
-require $root . '/src/schema.org.php';
-require $root . '/src/opengraph.php';
-require $root . '/src/whatsapp.php';
+$config = require $root.'/src/config.php';
 
-$title       = $config['site_name'] . ' | Des chaussures pour ton style';
+require $root.'/src/helpers.php';
+
+require $root.'/src/products.php';
+
+require $root.'/src/schema.org.php';
+
+require $root.'/src/opengraph.php';
+
+require $root.'/src/whatsapp.php';
+
+$title = $config['site_name'].' | Des chaussures pour ton style';
 $description = 'Découvre notre collection de sneakers, chaussures de ville, '
-    . 'de sport et sandales. Commande facilement sur WhatsApp.';
+    .'de sport et sandales. Commande facilement sur WhatsApp.';
 $active_page = 'catalogue';
-$topbar      = 'Découvre les modèles disponibles !';
+$topbar = 'Découvre les modèles disponibles !';
 
-$open_graph_tags      = render_open_graph($config, [
-    'title'       => $title,
+$open_graph_tags = render_open_graph($config, [
+    'title' => $title,
     'description' => $description,
-    'type'        => 'website',
-    'url'         => 'index.php',
+    'type' => 'website',
+    'url' => 'index.php',
 ]);
-$schema_org_tags      = '';
+$schema_org_tags = '';
 $whatsapp_contact_url = whatsapp_contact_link($config);
 
 try {
     $all_products = load_products($config);
 } catch (RuntimeException $error) {
     http_response_code(500);
-    require $root . '/templates/header.php';
+
+    require $root.'/templates/header.php';
     ?>
     <section class="section">
         <div class="container">
@@ -41,17 +47,18 @@ try {
         </div>
     </section>
     <?php
-    require $root . '/templates/footer.php';
+    require $root.'/templates/footer.php';
+
     exit;
 }
 
-$search   = trim((string) ($_GET['q'] ?? ''));
+$search = trim((string) ($_GET['q'] ?? ''));
 $category = (string) ($_GET['category'] ?? 'all');
-$sort     = (string) ($_GET['sort'] ?? 'default');
+$sort = (string) ($_GET['sort'] ?? 'default');
 
 $categories = list_categories($all_products);
 
-if ($category !== 'all' && !array_key_exists($category, $categories)) {
+if ('all' !== $category && !array_key_exists($category, $categories)) {
     $category = 'all';
 }
 
@@ -61,38 +68,38 @@ if (!in_array($sort, valid_sort_options(), true)) {
 
 $products = filter_and_sort($all_products, $search, $category, $sort);
 
-$og_image     = '';
+$og_image = '';
 $og_image_alt = $config['site_name'];
 
-if ($products !== []) {
-    $og_image     = (string) ($products[0]['og_image'] ?? $products[0]['image'] ?? '');
+if ([] !== $products) {
+    $og_image = (string) ($products[0]['og_image'] ?? $products[0]['image'] ?? '');
     $og_image_alt = (string) ($products[0]['name'] ?? $config['site_name']);
 }
 
 $open_graph_tags = render_open_graph($config, [
-    'title'        => $title,
-    'description'  => $description,
-    'type'         => 'website',
-    'url'          => 'index.php',
-    'image'        => $og_image,
-    'image_alt'    => $og_image_alt,
-    'image_width'  => 1200,
+    'title' => $title,
+    'description' => $description,
+    'type' => 'website',
+    'url' => 'index.php',
+    'image' => $og_image,
+    'image_alt' => $og_image_alt,
+    'image_width' => 1200,
     'image_height' => 630,
-    'image_type'   => 'image/jpeg',
+    'image_type' => 'image/jpeg',
 ]);
 
-$schema_org_tags = $products !== []
+$schema_org_tags = [] !== $products
     ? render_schema_org(schema_org_item_list($products, $config))
     : '';
 
 $sort_options = [
-    'default'    => 'Tri par défaut',
-    'price-asc'  => 'Prix croissant',
+    'default' => 'Tri par défaut',
+    'price-asc' => 'Prix croissant',
     'price-desc' => 'Prix décroissant',
-    'name-asc'   => 'Nom A à Z',
+    'name-asc' => 'Nom A à Z',
 ];
 
-require $root . '/templates/header.php';
+require $root.'/templates/header.php';
 ?>
 
         <section class="hero" id="accueil">
@@ -192,7 +199,7 @@ require $root . '/templates/header.php';
                         class="catalogue-input"
                         placeholder="Rechercher une chaussure..."
                         aria-label="Rechercher une chaussure"
-                        value="<?= e($search) ?>">
+                        value="<?php echo e($search); ?>">
 
                     <select
                         id="categoryFilter"
@@ -202,12 +209,12 @@ require $root . '/templates/header.php';
 
                         <option value="all">Toutes les catégories</option>
 
-                        <?php foreach ($categories as $code => $label): ?>
-                            <option value="<?= e((string) $code) ?>"
-                                <?= $category === $code ? 'selected' : '' ?>>
-                                <?= e($label) ?>
+                        <?php foreach ($categories as $code => $label) { ?>
+                            <option value="<?php echo e((string) $code); ?>"
+                                <?php echo $category === $code ? 'selected' : ''; ?>>
+                                <?php echo e($label); ?>
                             </option>
-                        <?php endforeach; ?>
+                        <?php } ?>
 
                     </select>
 
@@ -217,12 +224,12 @@ require $root . '/templates/header.php';
                         class="catalogue-select"
                         aria-label="Trier les produits">
 
-                        <?php foreach ($sort_options as $value => $label): ?>
-                            <option value="<?= e($value) ?>"
-                                <?= $sort === $value ? 'selected' : '' ?>>
-                                <?= e($label) ?>
+                        <?php foreach ($sort_options as $value => $label) { ?>
+                            <option value="<?php echo e($value); ?>"
+                                <?php echo $sort === $value ? 'selected' : ''; ?>>
+                                <?php echo e($label); ?>
                             </option>
-                        <?php endforeach; ?>
+                        <?php } ?>
 
                     </select>
 
@@ -233,27 +240,27 @@ require $root . '/templates/header.php';
                 </form>
 
                 <p class="catalogue-status" aria-live="polite">
-                    <?= e((string) count($products)) ?>
-                    produit<?= count($products) > 1 ? 's' : '' ?>
-                    affiché<?= count($products) > 1 ? 's' : '' ?>.
+                    <?php echo e((string) count($products)); ?>
+                    produit<?php echo count($products) > 1 ? 's' : ''; ?>
+                    affiché<?php echo count($products) > 1 ? 's' : ''; ?>.
                 </p>
 
                 <div class="product-grid" id="productGrid">
 
-                    <?php if ($products === []): ?>
+                    <?php if ([] === $products) { ?>
 
                         <div class="empty-state">
                             <h3>Aucun produit trouvé</h3>
                             <p>Essaie un autre nom ou modifie les filtres.</p>
                         </div>
 
-                    <?php else: ?>
+                    <?php } else { ?>
 
-                        <?php foreach ($products as $product): ?>
-                            <?php require $root . '/templates/product-card.php'; ?>
-                        <?php endforeach; ?>
+                        <?php foreach ($products as $product) { ?>
+                            <?php require $root.'/templates/product-card.php'; ?>
+                        <?php } ?>
 
-                    <?php endif; ?>
+                    <?php } ?>
 
                 </div>
 
@@ -278,7 +285,7 @@ require $root . '/templates/header.php';
 
                     </div>
 
-                    <a href="<?= e($whatsapp_contact_url) ?>"
+                    <a href="<?php echo e($whatsapp_contact_url); ?>"
                        class="btn btn-dark"
                        target="_blank"
                        rel="noopener">
@@ -291,4 +298,4 @@ require $root . '/templates/header.php';
 
         </section>
 
-<?php require $root . '/templates/footer.php'; ?>
+<?php require $root.'/templates/footer.php'; ?>
