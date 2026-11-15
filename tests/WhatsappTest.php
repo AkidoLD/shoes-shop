@@ -4,7 +4,7 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 
-require __DIR__.'/../src/whatsapp.php';
+require __DIR__ . '/../src/whatsapp.php';
 
 /**
  * @internal
@@ -20,7 +20,8 @@ class WhatsappTest extends TestCase
         $this->assertEquals($expected, whatsapp_number($config));
     }
 
-    public function testFailedTest(){
+    public function testFailedTest()
+    {
         $this->assertEquals(1, 2);
     }
 }
