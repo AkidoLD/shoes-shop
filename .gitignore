@@ -18,3 +18,4 @@ AGENTS.md
 # dependancies
 vendor/
 node_modules/.phpunit.cache/
+.phpunit.cache/
