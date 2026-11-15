@@ -7,4 +7,14 @@ on:
     branches: [main]
     
 jobs:
-  # Liste des jobs de la CI
+  lint:
+    uses: ./.github/workflows/lint_test.yaml
+    
+  test:
+    uses: ./.github/workflows/unit_test.yaml
+    
+  ci:
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Code teste!"
