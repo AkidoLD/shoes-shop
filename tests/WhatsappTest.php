@@ -19,4 +19,8 @@ class WhatsappTest extends TestCase
         $expected = '237679251512';
         $this->assertEquals($expected, whatsapp_number($config));
     }
+
+    public function testFailedTest(){
+        $this->assertEquals(1 == 2);
+    }
 }
