@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-$active_page = $active_page ?? 'home';
-$topbar = $topbar ?? 'Découvre les modèles disponibles !';
+$active_page ??= 'home';
+$topbar ??= 'Découvre les modèles disponibles !';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
