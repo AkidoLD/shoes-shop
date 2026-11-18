@@ -10,6 +10,8 @@ conversationnel articulé sur WhatsApp Business.
 - **Catalogue** : recherche, filtre par catégorie et tri, sans JavaScript.
 - **SQLite + PDO** : produits, catégories, tailles et couleurs en base, avec une
   couche de persistance (`ProductRepository`) pour le CRUD.
+- **Administration** : connexion par session et CRUD produits accessible sur
+  `/admin/`, sans table utilisateur supplémentaire.
 - **Fiche produit** : `product.php?ref=SH001` (404 si la référence est inconnue).
 - **Schema.org (JSON-LD)** : `Product` + `Offer` sur chaque fiche, `ItemList` du
   catalogue sur la page d'accueil.
@@ -56,6 +58,8 @@ l'extension GD s'installe avec `sudo apt install php8.4-gd`.
 | `currency_label` | Symbole affiché après les montants (`FCFA`) |
 | `og_image` | Image de partage par défaut (vide = première image produit) |
 | `db_path` | Chemin de la base SQLite (vide = `data/shoes.sqlite`) |
+| `admin_user` | Identifiant de l'administration (`admin` par défaut) |
+| `admin_password` | Mot de passe de l'administration (`admin` par défaut) |
 
 ## Base de données
 
@@ -71,8 +75,15 @@ $repository->update('SH001', ['price' => 16000]);
 $repository->delete('SH002');
 ```
 
-L'interface d'administration n'est pas incluse dans cette branche : elle fera
-l'objet d'une branche dédiée.
+L'interface d'administration est accessible sur
+<http://localhost:8000/admin/>. Elle permet de lister, créer, modifier et
+supprimer les produits. Les identifiants par défaut sont `admin` / `admin` ;
+ils se changent dans `src/config.local.php` via `admin_user` et
+`admin_password`. Aucune table utilisateur n'est nécessaire pour le moment.
+
+L'administration ne gère pas encore l'upload d'images : les fichiers sont à
+déposer dans `public/assets/img/`, puis le chemin est saisi dans le formulaire.
+Les images Open Graph restent générées par `composer og:generate`.
 
 ## Tests
 
