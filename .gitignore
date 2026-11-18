@@ -1,6 +1,10 @@
 # Local settings and secrets (never commit)
 src/config.local.php
 
+# SQLite database (generated with composer db:init)
+/data/*.sqlite
+/data/*.sqlite-*
+
 # Editors and operating systems
 .DS_Store
 Thumbs.db

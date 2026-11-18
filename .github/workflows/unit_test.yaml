@@ -12,5 +12,6 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: "8.4"
+          extensions: gd, pdo_sqlite
       - run: composer install --dev
       - run: composer run test
