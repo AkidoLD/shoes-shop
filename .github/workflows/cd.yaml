@@ -16,5 +16,10 @@ jobs:
     steps:
       - if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
         run: exit 1
+      - uses: actions/download-artifact@v4
+        with:
+          name: app-release
+      - run: unzip release.zip
+      - run: ls -R
       - run: echo "Deploiement reussi"
     
