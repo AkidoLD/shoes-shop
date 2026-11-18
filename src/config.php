@@ -19,6 +19,8 @@ $defaults = [
     'currency_label' => 'FCFA',
     'og_image' => '',
     'db_path' => dirname(__DIR__).'/data/shoes.sqlite',
+    'admin_user' => 'admin',
+    'admin_password' => 'admin',
 ];
 
 $config = array_merge($defaults, $local);

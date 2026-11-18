@@ -16,14 +16,22 @@
 ├── public/                  # racine web : seul dossier exposé
 │   ├── index.php            # liste des produits
 │   ├── product.php          # fiche produit (product.php?ref=SH001)
+│   ├── admin/               # administration protégée par session
+│   │   ├── index.php        # liste des produits
+│   │   ├── edit.php         # création / modification d'un produit
+│   │   ├── delete.php       # suppression (POST + CSRF)
+│   │   ├── login.php        # connexion admin
+│   │   └── logout.php       # déconnexion (POST + CSRF)
 │   └── assets/
-│       ├── css/style.css    # feuille de style
+│       ├── css/style.css    # feuille de style du catalogue
+│       ├── css/admin.css    # feuille de style de l'administration
 │       ├── js/app.js        # JavaScript de confort uniquement
 │       └── img/             # photos produit (JPEG) + img/og/ (1200 × 630)
 ├── src/                     # logique
 │   ├── bootstrap.php        # autoload + config + fonctions partagées
-│   ├── config.php           # réglages (URL, WhatsApp, devise, base…)
+│   ├── config.php           # réglages (URL, WhatsApp, devise, base, admin…)
 │   ├── config.example.php   # modèle de config locale à copier
+│   ├── AdminAuth.php        # session, CSRF et identifiants admin
 │   ├── Database.php         # connexion PDO SQLite et migrations
 │   ├── Product.php          # entité produit
 │   ├── ProductNotFoundException.php
@@ -34,8 +42,10 @@
 │   ├── opengraph.php        # balises Open Graph et Twitter Card
 │   └── whatsapp.php         # liens wa.me pré-remplis
 ├── templates/               # affichage
-│   ├── header.php           # <head> + en-tête
-│   ├── footer.php           # pied de page
+│   ├── header.php           # <head> + en-tête du catalogue
+│   ├── footer.php           # pied de page du catalogue
+│   ├── admin-header.php     # <head> + en-tête de l'administration
+│   ├── admin-footer.php     # pied de page de l'administration
 │   └── product-card.php     # une carte produit dans la liste
 └── tests/                   # PHPUnit
 ```
@@ -56,7 +66,11 @@
   fonctions partagées, puis renvoie `$config`.
 - **`src/config.php`** — renvoie un tableau de configuration : valeurs par
   défaut, puis surcharge éventuelle par `src/config.local.php` (fusion). Déduit
-  l'URL du site de la requête si `site_url` reste vide.
+  l'URL du site de la requête si `site_url` reste vide. Contient aussi les
+  identifiants de l'administration (`admin_user`, `admin_password`).
+- **`src/AdminAuth.php`** — gère la session de l'administration : vérification
+  des identifiants, régénération de session à la connexion, jeton CSRF,
+  messages flash et déconnexion.
 - **`src/Database.php`** — ouvre une connexion PDO SQLite, active les clés
   étrangères et vérifie que le schéma est initialisé.
 - **`src/Product.php`** — entité immuable (`readonly`) avec `fromRow()` et
@@ -77,6 +91,17 @@
   d'URL, interroge le repository, puis rend le HTML.
 - **`public/product.php`** — point d'entrée de la fiche. Répond `404` si la
   référence est absente ou inconnue.
+- **`public/admin/login.php`** — affiche le formulaire de connexion et vérifie
+  les identifiants configurés.
+- **`public/admin/index.php`** — liste les produits et propose les actions de
+  création, modification et suppression.
+- **`public/admin/edit.php`** — formulaire de création/modification. Les
+  tailles et couleurs sont saisies sous forme de listes séparées par des
+  virgules, puis passent par `ProductRepository`.
+- **`public/admin/delete.php`** — supprime un produit après vérification du
+  jeton CSRF.
+- **`public/admin/logout.php`** — détruit la session après vérification du
+  jeton CSRF.
 
 ## Flux d'une requête
 
@@ -93,6 +118,19 @@ Exemple pour la liste :
    par produit) et `templates/footer.php` produisent le HTML.
 8. Le navigateur reçoit **un HTML complet** : les produits sont déjà dedans.
 
+## Flux de l'administration
+
+1. Le navigateur demande `GET /admin/`. `AdminAuth` vérifie la session : sans
+   connexion, la page redirige vers `login.php`.
+2. `login.php` vérifie le couple `admin_user` / `admin_password` et régénère
+   l'identifiant de session. Un jeton CSRF protège les formulaires.
+3. `index.php` liste les produits via `ProductRepository::all()`.
+4. `edit.php` valide les champs, convertit les listes de tailles et couleurs,
+   puis appelle `ProductRepository::create()` ou `update()`.
+5. `delete.php` supprime le produit après vérification du jeton CSRF, puis
+   redirige vers la liste avec un message flash.
+6. `logout.php` détruit la session.
+
 ## Séparation logique / affichage
 
 - Les gabarits ne lisent aucune base et ne font aucun calcul métier : ils
@@ -100,5 +138,5 @@ Exemple pour la liste :
 - Les paramètres d'URL ne sont jamais utilisés directement : ils passent par
   une validation (liste des catégories connues, options de tri).
 - Toute valeur affichée est échappée avec `e()`.
-- Le CRUD est centralisé dans `ProductRepository` ; les pages et les futurs
-  écrans d'administration n'ont pas à écrire de SQL.
+- Le CRUD est centralisé dans `ProductRepository` ; les pages du catalogue et
+  les écrans d'administration n'ont pas à écrire de SQL.

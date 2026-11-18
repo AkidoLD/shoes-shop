@@ -15,4 +15,9 @@ return [
 
     // Laisser vide pour utiliser data/shoes.sqlite.
     'db_path' => '',
+
+    // Identifiants de l'interface d'administration.
+    // À modifier avant toute mise en ligne.
+    'admin_user' => 'admin',
+    'admin_password' => 'admin',
 ];
