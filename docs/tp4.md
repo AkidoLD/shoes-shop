@@ -19,8 +19,9 @@ Trois briques indépendantes, chacune dans son fichier source :
   une valeur contenant `</script>`) et produit la balise
   `<script type="application/ld+json">`.
 
-Les prix et disponibilités viennent directement de `data/products.json` :
-aucune donnée n'est dupliquée dans le HTML.
+Les prix et disponibilités viennent directement de la base SQLite
+(`data/shoes.sqlite`, lue via `ProductRepository`) : aucune donnée n'est
+dupliquée dans le HTML.
 
 ## 2. Open Graph
 
@@ -39,7 +40,9 @@ image produit sert d'aperçu par défaut ; `og_image` permet de fixer une image
 de partage dédiée.
 
 Les visuels sont des JPEG : `assets/img/shXXX.jpg` (1200 × 900) pour les pages
-et `assets/img/og/shXXX.jpg` (1200 × 630) pour les aperçus de partage.
+et `assets/img/og/shXXX.jpg` (1200 × 630) pour les aperçus de partage. Les
+images OG sont générées avec GD par `composer og:generate`
+(`src/OgImageGenerator.php`).
 
 ## 3. Closing WhatsApp
 
