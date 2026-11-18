@@ -11,7 +11,7 @@ jobs:
         with:
           php-version: "8.4"
           extensions: gd, pdo_sqlite
-      - run: composer install --no-dev --optimize-autoload --no-interaction
+      - run: composer install --no-dev --optimize-autoloader --no-interaction
       - name: Archivage du code ...
         run: zip -r release.zip . -x ".git*" ".github/*" "tests/*" "docs/*" "phpunit.xml" ".php-cs-fixer.dist.php"
       - run: echo "Code archive"
