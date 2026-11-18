@@ -2,19 +2,13 @@
 
 declare(strict_types=1);
 
+use ShoesShop\Database;
+use ShoesShop\Product;
+use ShoesShop\ProductRepository;
+
 $root = dirname(__DIR__);
 
-$config = require $root.'/src/config.php';
-
-require $root.'/src/helpers.php';
-
-require $root.'/src/products.php';
-
-require $root.'/src/schema.org.php';
-
-require $root.'/src/opengraph.php';
-
-require $root.'/src/whatsapp.php';
+$config = require $root.'/src/bootstrap.php';
 
 $title = $config['site_name'].' | Des chaussures pour ton style';
 $description = 'Découvre notre collection de sneakers, chaussures de ville, '
@@ -31,9 +25,35 @@ $open_graph_tags = render_open_graph($config, [
 $schema_org_tags = '';
 $whatsapp_contact_url = whatsapp_contact_link($config);
 
+$search = trim((string) ($_GET['q'] ?? ''));
+$category = (string) ($_GET['category'] ?? 'all');
+$sort = (string) ($_GET['sort'] ?? 'default');
+
+$sort_options = [
+    'default' => 'Tri par défaut',
+    'price-asc' => 'Prix croissant',
+    'price-desc' => 'Prix décroissant',
+    'name-asc' => 'Nom A à Z',
+];
+
 try {
-    $all_products = load_products($config);
+    $repository = new ProductRepository(Database::connect($config));
+    $categories = $repository->categories();
+
+    if ('all' !== $category && !array_key_exists($category, $categories)) {
+        $category = 'all';
+    }
+
+    if (!array_key_exists($sort, $sort_options)) {
+        $sort = 'default';
+    }
+
+    $products = array_map(
+        static fn (Product $product): array => $product->toArray(),
+        $repository->search($search, $category, $sort)
+    );
 } catch (RuntimeException $error) {
+    error_log($error->getMessage());
     http_response_code(500);
 
     require $root.'/templates/header.php';
@@ -51,22 +71,6 @@ try {
 
     exit;
 }
-
-$search = trim((string) ($_GET['q'] ?? ''));
-$category = (string) ($_GET['category'] ?? 'all');
-$sort = (string) ($_GET['sort'] ?? 'default');
-
-$categories = list_categories($all_products);
-
-if ('all' !== $category && !array_key_exists($category, $categories)) {
-    $category = 'all';
-}
-
-if (!in_array($sort, valid_sort_options(), true)) {
-    $sort = 'default';
-}
-
-$products = filter_and_sort($all_products, $search, $category, $sort);
 
 $og_image = '';
 $og_image_alt = $config['site_name'];
@@ -91,13 +95,6 @@ $open_graph_tags = render_open_graph($config, [
 $schema_org_tags = [] !== $products
     ? render_schema_org(schema_org_item_list($products, $config))
     : '';
-
-$sort_options = [
-    'default' => 'Tri par défaut',
-    'price-asc' => 'Prix croissant',
-    'price-desc' => 'Prix décroissant',
-    'name-asc' => 'Nom A à Z',
-];
 
 require $root.'/templates/header.php';
 ?>

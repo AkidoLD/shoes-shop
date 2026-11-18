@@ -2,19 +2,12 @@
 
 declare(strict_types=1);
 
+use ShoesShop\Database;
+use ShoesShop\ProductRepository;
+
 $root = dirname(__DIR__);
 
-$config = require $root.'/src/config.php';
-
-require $root.'/src/helpers.php';
-
-require $root.'/src/products.php';
-
-require $root.'/src/schema.org.php';
-
-require $root.'/src/opengraph.php';
-
-require $root.'/src/whatsapp.php';
+$config = require $root.'/src/bootstrap.php';
 
 $whatsapp_contact_url = whatsapp_contact_link($config);
 $open_graph_tags = '';
@@ -25,9 +18,11 @@ $product = null;
 
 try {
     if ('' !== $ref) {
-        $product = find_product_by_ref(load_products($config), $ref);
+        $repository = new ProductRepository(Database::connect($config));
+        $product = $repository->findByRef($ref)?->toArray();
     }
 } catch (RuntimeException $error) {
+    error_log($error->getMessage());
     $product = null;
 }
 

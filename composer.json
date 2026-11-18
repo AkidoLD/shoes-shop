@@ -1,10 +1,18 @@
 {
   "require": {
-    "php": ">=8.4"
+    "php": ">=8.4",
+    "ext-gd": "*",
+    "ext-pdo": "*",
+    "ext-pdo_sqlite": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "^13.4",
     "friendsofphp/php-cs-fixer": "^3.95"
+  },
+  "autoload": {
+    "psr-4": {
+      "ShoesShop\\": "src/"
+    }
   },
   "autoload-dev": {
     "psr-4": {
@@ -13,6 +21,8 @@
   },
   "scripts": {
     "test": "vendor/bin/phpunit --testdox",
-    "php-cs-fixer": "vendor/bin/php-cs-fixer"
+    "php-cs-fixer": "vendor/bin/php-cs-fixer",
+    "db:init": "php bin/db-init.php",
+    "og:generate": "php bin/generate-og.php"
   }
 }

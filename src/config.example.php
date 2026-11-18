@@ -12,4 +12,7 @@ return [
     'currency_label' => 'FCFA',
 
     'og_image' => '',
+
+    // Laisser vide pour utiliser data/shoes.sqlite.
+    'db_path' => '',
 ];
