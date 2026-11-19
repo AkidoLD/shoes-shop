@@ -15,9 +15,15 @@ $topbar ??= 'Découvre les modèles disponibles !';
 
     <meta name="description" content="<?php echo e($description); ?>">
 
+    <!-- Debut des balises open-graph  -->
     <?php echo $open_graph_tags ?? ''; ?>
+    
+    <!-- Fin des balises open-graph  -->
 
+    <!-- Debut des balises schema.org  -->
     <?php echo $schema_org_tags ?? ''; ?>
+
+    <!-- Fin des balises schema.org  -->
 
     <meta name="theme-color" content="#0B0B0D">
 
