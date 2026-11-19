@@ -1,0 +1,22 @@
+name: Setup PHP
+description: Installe PHP et les dépendances Composer
+
+inputs:
+  dev-mode:
+    description: Installer aussi les dépendances de dev
+    required: false
+    default: "false"
+
+runs:
+  using: composite
+  steps:
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: "8.4"
+        extensions: gd, pdo_sqlite
+    - if: inputs.dev-mode == 'true'
+      run: composer install --no-interaction
+      shell: bash
+    - if: inputs.dev-mode != 'true'
+      run: composer install --no-dev --optimize-autoloader --no-interaction
+      shell: bash
