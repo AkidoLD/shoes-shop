@@ -7,17 +7,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.4"
-          extensions: gd, pdo_sqlite
-      - run: composer install --no-dev --optimize-autoloader --no-interaction
+      - uses: ./.github/actions/setup-php
       - name: Archivage du code ...
         run: zip -r release.zip . -x ".git*" ".github/*" "tests/*" "docs/*" "phpunit.xml" ".php-cs-fixer.dist.php"
       - run: echo "Code archive"
       - name: "Publication de l'artefacte"
         uses: actions/upload-artifact@v7
-        with:   
-           name: app-release
-           path: release.zip
+        with:
+          name: app-release
+          path: release.zip
+          retention-days: 3
       - run: echo "Artefact publie"

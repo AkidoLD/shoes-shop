@@ -9,9 +9,7 @@ jobs:
     steps:
       - run: pwd
       - uses: actions/checkout@v7
-      - uses: shivammathur/setup-php@v2
+      - uses: ./.github/actions/setup-php
         with:
-          php-version: "8.4"
-          extensions: gd, pdo_sqlite
-      - run: composer install --dev
+          dev-mode: 'true'
       - run: composer run test
