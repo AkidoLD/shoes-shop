@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v7
         with:
-          name: app-release
-      - run: unzip release.zip
+          name: app-build
+      - run: unzip build.zip
       - run: ls -R
       - run: echo "Deploiement reussi"
