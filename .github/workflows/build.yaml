@@ -3,18 +3,18 @@ name: Build
 on: workflow_call
 
 jobs:
-  create-linux-artefact:
+  create-linux-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-php
       - name: Archivage du code ...
-        run: zip -r release.zip . -x ".git*" ".github/*" "tests/*" "docs/*" "phpunit.xml" ".php-cs-fixer.dist.php"
+        run: zip -r build.zip . -x ".git*" ".github/*" "tests/*" "docs/*" "phpunit.xml" ".php-cs-fixer.dist.php"
       - run: echo "Code archive"
-      - name: "Publication de l'artefacte"
+      - name: "Televersement du build ..."
         uses: actions/upload-artifact@v7
         with:
-          name: app-release
-          path: release.zip
+          name: app-build
+          path: build.zip
           retention-days: 3
-      - run: echo "Artefact publie"
+      - run: echo "Build televerse."
